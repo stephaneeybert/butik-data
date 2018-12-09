@@ -1,7 +1,9 @@
 package com.thalasoft.butik.data.jpa.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -26,7 +28,7 @@ public class OrderProduct extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "shop_order_id", nullable = false)
     private Order order;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "shop_product_id", nullable = false)
     private Product product;
     @Column(nullable = false)
