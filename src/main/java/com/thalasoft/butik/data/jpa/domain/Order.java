@@ -28,46 +28,46 @@ import lombok.ToString;
 @SequenceGenerator(name = "id_generator", sequenceName = "shop_order_id_seq", allocationSize = 10)
 public class Order extends AbstractEntity {
 
-    @Column(name = "order_ref_id", nullable = false)
-    private Integer orderRefId;
+  @Column(name = "order_ref_id", nullable = false)
+  private Integer orderRefId;
 
-    @Column(nullable = false, unique = true)
-    private EmailAddress email;
+  @Column(nullable = false, unique = true)
+  private EmailAddress email;
 
-    @Column(nullable = false)
-    private LocalDateTime orderedOn;
+  @Column(nullable = false)
+  private LocalDateTime orderedOn;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "order")
-    private Set<OrderProduct> orderProducts = new HashSet<>();
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "order")
+  private Set<OrderProduct> orderProducts = new HashSet<>();
 
-    public void addProduct(Product product) {
-        boolean present = false;
-        for (OrderProduct orderProduct : this.orderProducts) {
-            if (orderProduct.getProduct().equals(product)) {
-                present = true;
-            }
-        }
-        if (!present) {
-          OrderProduct orderProduct = new OrderProduct();
-            orderProduct.setProduct(product);
-            orderProduct.setPrice(product.getPrice());
-            orderProduct.setOrder(this);
-            this.orderProducts.add(orderProduct);
-        }
+  public void addProduct(Product product) {
+    boolean present = false;
+    for (OrderProduct orderProduct : this.orderProducts) {
+      if (orderProduct.getProduct().equals(product)) {
+        present = true;
+      }
     }
-
-    public void removeProduct(Product product) {
-        // Deleting within a loop trigers a concurrent exception
-        OrderProduct orderProductToRemove = null;
-        for (OrderProduct orderProduct : this.orderProducts) {
-            if (orderProduct.getProduct().equals(product)) {
-                orderProductToRemove = orderProduct;
-            }
-        }
-        if (null != orderProductToRemove) {
-            orderProductToRemove.setProduct(null);
-            this.orderProducts.remove(orderProductToRemove);
-        }
+    if (!present) {
+      OrderProduct orderProduct = new OrderProduct();
+      orderProduct.setProduct(product);
+      orderProduct.setPrice(product.getPrice());
+      orderProduct.setOrder(this);
+      this.orderProducts.add(orderProduct);
     }
+  }
+
+  public void removeProduct(Product product) {
+    // Deleting within a loop trigers a concurrent exception
+    OrderProduct orderProductToRemove = null;
+    for (OrderProduct orderProduct : this.orderProducts) {
+      if (orderProduct.getProduct().equals(product)) {
+        orderProductToRemove = orderProduct;
+      }
+    }
+    if (null != orderProductToRemove) {
+      orderProductToRemove.setProduct(null);
+      this.orderProducts.remove(orderProductToRemove);
+    }
+  }
 
 }

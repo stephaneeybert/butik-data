@@ -21,9 +21,9 @@ import lombok.ToString;
 @SequenceGenerator(name = "id_generator", sequenceName = "shop_product_id_seq", allocationSize = 10)
 public class Product extends AbstractEntity {
 
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
-    private String price;
+  @Column(nullable = false)
+  private String name;
+  @Column(nullable = false)
+  private String price;
 
 }
