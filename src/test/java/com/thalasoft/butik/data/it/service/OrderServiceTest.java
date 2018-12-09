@@ -15,6 +15,7 @@ import com.thalasoft.butik.data.jpa.domain.Order;
 import com.thalasoft.butik.data.jpa.domain.Product;
 import com.thalasoft.butik.data.service.OrderService;
 import com.thalasoft.butik.data.service.ProductService;
+import com.thalasoft.toolbox.utils.CommonTools;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,7 +53,7 @@ public class OrderServiceTest extends BaseTest {
   public void beforeAnyTest() throws Exception {
     manyProducts = new ArrayList<Product>();
     for (int i = 0; i < 40; i++) {
-      String index = intToString(i, 3);
+      String index = CommonTools.formatSortableStringNumber(i, 3);
       Product oneProduct = new Product();
       oneProduct.setName("product" + index);
       oneProduct.setPrice("11");

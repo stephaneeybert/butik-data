@@ -13,6 +13,7 @@ import java.util.Optional;
 import com.thalasoft.butik.data.it.BaseTest;
 import com.thalasoft.butik.data.jpa.domain.Product;
 import com.thalasoft.butik.data.jpa.repository.ProductRepository;
+import com.thalasoft.toolbox.utils.CommonTools;
 
 import org.junit.After;
 import org.junit.Before;
@@ -55,7 +56,7 @@ public class ProductRepositoryTest extends BaseTest {
 
     manyProducts = new ArrayList<Product>();
     for (int i = 0; i < 39; i++) {
-      String index = intToString(i, 3);
+      String index = CommonTools.formatSortableStringNumber(i, 3);
       Product oneProduct = new Product();
       oneProduct.setName("product" + index);
       oneProduct.setPrice("11");
