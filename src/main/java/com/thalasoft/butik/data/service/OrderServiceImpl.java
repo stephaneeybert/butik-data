@@ -1,5 +1,6 @@
 package com.thalasoft.butik.data.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.annotation.Resource;
@@ -28,6 +29,16 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public Page<Order> all(Pageable page) {
     Page<Order> orders = orderRepository.all(page);
+    if (orders.getNumberOfElements() > 0) {
+      return orders;
+    } else {
+      throw new EntityNotFoundException();
+    }
+  }
+
+  @Override
+  public Page<Order> findAllByOrderedOnBetween(LocalDateTime openingDate, LocalDateTime closingDate, Pageable page) {
+    Page<Order> orders = orderRepository.findAllByOrderedOnBetween(openingDate, closingDate, page);
     if (orders.getNumberOfElements() > 0) {
       return orders;
     } else {

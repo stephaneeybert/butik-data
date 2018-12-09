@@ -1,5 +1,7 @@
 package com.thalasoft.butik.data.service;
 
+import java.time.LocalDateTime;
+
 import com.thalasoft.butik.data.exception.EntityNotFoundException;
 import com.thalasoft.butik.data.jpa.domain.Order;
 import com.thalasoft.butik.data.jpa.domain.Product;
@@ -27,6 +29,8 @@ public interface OrderService {
   public Order findById(Long id) throws EntityNotFoundException;
 
   public Page<Order> all(Pageable page);
+
+  public Page<Order> findAllByOrderedOnBetween(LocalDateTime openingDateTime, LocalDateTime closingDateTime, Pageable page);
 
   public Order findByOrderRefId(Long orderRefId) throws EntityNotFoundException;
 

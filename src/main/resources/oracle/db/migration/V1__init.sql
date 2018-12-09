@@ -28,6 +28,7 @@ create table shop_order (
   updated_on date,
   order_ref_id number(10) not null,
   email varchar2(255) not null,
+  ordered_on date,
   constraint shop_order_u1 unique (email),
   constraint shop_order_pk primary key (id)
 );

@@ -24,6 +24,7 @@ create table shop_order (
   updated_on datetime,
   order_ref_id int(10) not null,
   email varchar(50) not null,
+  ordered_on datetime,
   unique key email (email),
   primary key (id)
 );

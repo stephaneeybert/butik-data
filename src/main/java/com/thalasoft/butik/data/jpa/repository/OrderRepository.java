@@ -1,5 +1,6 @@
 package com.thalasoft.butik.data.jpa.repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import com.thalasoft.butik.data.jpa.domain.EmailAddress;
@@ -20,6 +21,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>, OrderReposi
 
   @Query("SELECT o FROM Order o")
   public Page<Order> all(Pageable page);
+
+  public Page<Order> findAllByOrderedOnBetween(LocalDateTime openingDateTime, LocalDateTime closingDateTime, Pageable page);
 
   @Modifying
   @Query("UPDATE Order SET email = :email WHERE id = :id")

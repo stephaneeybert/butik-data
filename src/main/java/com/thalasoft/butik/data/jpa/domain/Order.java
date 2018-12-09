@@ -1,5 +1,6 @@
 package com.thalasoft.butik.data.jpa.domain;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,8 +30,13 @@ public class Order extends AbstractEntity {
 
     @Column(name = "order_ref_id", nullable = false)
     private Integer orderRefId;
+
     @Column(nullable = false, unique = true)
     private EmailAddress email;
+
+    @Column(nullable = false)
+    private LocalDateTime orderedOn;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "order")
     private Set<OrderProduct> orderProducts = new HashSet<>();
 

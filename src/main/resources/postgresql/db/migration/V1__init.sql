@@ -25,6 +25,7 @@ create table shop_order (
   updated_on timestamp,
   order_ref_id int not null,
   email varchar(50) not null,
+  ordered_on timestamp,
   constraint email unique (email)
 );
 
