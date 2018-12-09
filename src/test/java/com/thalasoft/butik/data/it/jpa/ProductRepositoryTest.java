@@ -26,6 +26,8 @@ import org.springframework.data.domain.Sort;
 
 public class ProductRepositoryTest extends BaseTest {
 
+  private static final int MAX_COLLECTION = 39;
+
   @Autowired
   ProductRepository productRepository;
 
@@ -55,7 +57,7 @@ public class ProductRepositoryTest extends BaseTest {
     product3.setPrice("14");
 
     manyProducts = new ArrayList<Product>();
-    for (int i = 0; i < 39; i++) {
+    for (int i = 0; i < MAX_COLLECTION; i++) {
       String index = CommonTools.formatSortableStringNumber(i, 3);
       Product oneProduct = new Product();
       oneProduct.setName("product" + index);
@@ -146,7 +148,7 @@ public class ProductRepositoryTest extends BaseTest {
   public void testSearch() {
     Page<Product> products = productRepository.search("product", PageRequest.of(0, 10, sort));
     assertEquals(10, products.getContent().size());
-    assertEquals(39, products.getTotalElements());
+    assertEquals(MAX_COLLECTION, products.getTotalElements());
     assertEquals(4, products.getTotalPages());
     assertEquals("product000", products.getContent().get(0).getName());
     assertEquals("product001", products.getContent().get(1).getName());
