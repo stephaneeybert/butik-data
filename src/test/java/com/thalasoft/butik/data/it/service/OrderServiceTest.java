@@ -1,11 +1,14 @@
 package com.thalasoft.butik.data.it.service;
 
 import static com.thalasoft.butik.data.assertion.OrderAssert.assertThatOrder;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.thalasoft.butik.data.exception.EntityNotFoundException;
 import com.thalasoft.butik.data.it.BaseTest;
 import com.thalasoft.butik.data.jpa.domain.EmailAddress;
 import com.thalasoft.butik.data.jpa.domain.Order;
@@ -17,6 +20,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 public class OrderServiceTest extends BaseTest {
 
@@ -29,7 +36,16 @@ public class OrderServiceTest extends BaseTest {
   private Order order0;
   private List<Product> manyProducts;
 
+  private LocalDateTime someTimeAgo, aboutNow, soonEnough;
+
+  private Sort sort;
+
   public OrderServiceTest() {
+    someTimeAgo = LocalDateTime.now().minusMinutes(10);
+    aboutNow = LocalDateTime.now();
+    soonEnough = LocalDateTime.now().plusMinutes(10);
+
+    sort = Sort.by(Sort.Order.asc("orderRefId"));
   }
 
   @Before
@@ -47,6 +63,7 @@ public class OrderServiceTest extends BaseTest {
     order0 = new Order();
     order0.setOrderRefId(1);
     order0.setEmail(new EmailAddress("peter@gmail.com"));
+    order0.setOrderedOn(aboutNow);
     order0.addProduct(manyProducts.get(0));
     order0.addProduct(manyProducts.get(1));
     order0.addProduct(manyProducts.get(2));
@@ -108,6 +125,18 @@ public class OrderServiceTest extends BaseTest {
     order0 = orderService.partialUpdate(order0.getId(), order0);
     assertThatOrder(order0).hasEmail(email);
     assertThatOrder(order0).hasOrderRefId(originalOrderRefId);
+  }
+
+  @Test
+  public void testFindAllBetween() {
+    Pageable pageRequest = PageRequest.of(0, 10, sort);
+    Page<Order> orders = orderService.findAllByOrderedOnBetween(aboutNow.minusMinutes(1), aboutNow.plusMinutes(1),
+        pageRequest);
+    assertEquals(1, orders.getContent().size());
+    try {
+      orders = orderService.findAllByOrderedOnBetween(aboutNow.plusMinutes(1), soonEnough.plusMinutes(1), pageRequest);
+    } catch (EntityNotFoundException e) {
+    }
   }
 
 }
