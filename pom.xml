@@ -9,7 +9,7 @@
   <packaging>jar</packaging>
 
   <name>butik-data</name>
-  <description>The data layer of the butik</description>
+  <description>The data layer of the butik application</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
