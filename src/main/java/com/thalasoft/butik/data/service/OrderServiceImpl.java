@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public Order add(Order order) {
     try {
-      findByEmail(order.getEmail().toString());
+      findByEmail(order.getEmail().getEmailAddress());
       throw new EntityAlreadyExistsException();
     } catch (EntityNotFoundException e) {
       // Save the returned id into the entity

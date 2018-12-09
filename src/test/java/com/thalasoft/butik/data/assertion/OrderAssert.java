@@ -35,7 +35,7 @@ public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
 
   public OrderAssert hasEmail(EmailAddress email) {
     isNotNull();
-    assertThat(actual.getEmail().toString())
+    assertThat(actual.getEmail().getEmailAddress())
         .overridingErrorMessage("Expected the email to be <%s> but was <%s>.", email, actual.getEmail())
         .isEqualTo(email.toString());
     return this;
