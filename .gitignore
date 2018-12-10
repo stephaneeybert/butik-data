@@ -27,3 +27,4 @@ src/main/resources/mysql/mysql-user-data.sql
 .vscode/settings.json
 .vscode/launch.json
 .vscode
+.vscode/launch.test.json
