@@ -2,6 +2,7 @@ package com.thalasoft.butik.data.service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -9,8 +10,10 @@ import com.thalasoft.butik.data.exception.EntityAlreadyExistsException;
 import com.thalasoft.butik.data.exception.EntityNotFoundException;
 import com.thalasoft.butik.data.jpa.domain.EmailAddress;
 import com.thalasoft.butik.data.jpa.domain.Order;
+import com.thalasoft.butik.data.jpa.domain.OrderProduct;
 import com.thalasoft.butik.data.jpa.domain.Product;
 import com.thalasoft.butik.data.jpa.repository.OrderRepository;
+import com.thalasoft.butik.data.jpa.repository.ProductRepository;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -26,6 +29,9 @@ public class OrderServiceImpl implements OrderService {
   @Resource
   private OrderRepository orderRepository;
 
+  @Resource
+  private ProductRepository productRepository;
+  
   @Override
   public Page<Order> all(Pageable page) {
     Page<Order> orders = orderRepository.all(page);
@@ -100,6 +106,8 @@ public class OrderServiceImpl implements OrderService {
     } else {
       existingOrder.setEmail(new EmailAddress(modifiedOrder.getEmail().getEmailAddress()));
       existingOrder.setOrderRefId(modifiedOrder.getOrderRefId());
+      existingOrder.setOrderedOn(modifiedOrder.getOrderedOn());
+      existingOrder.setOrderProducts(modifiedOrder.getOrderProducts());
       // Save the returned id into the entity
       existingOrder = orderRepository.saveAndFlush(existingOrder);
       return existingOrder;
@@ -120,6 +128,10 @@ public class OrderServiceImpl implements OrderService {
       if (modifiedOrder.getOrderRefId() > 0) {
         existingOrder.setOrderRefId(modifiedOrder.getOrderRefId());
       }
+      if (modifiedOrder.getOrderedOn() != null) {
+        existingOrder.setOrderedOn(modifiedOrder.getOrderedOn());
+      }
+      existingOrder.setOrderProducts(modifiedOrder.getOrderProducts());
       // Save the returned id into the entity
       existingOrder = orderRepository.saveAndFlush(existingOrder);
       return existingOrder;
@@ -146,6 +158,7 @@ public class OrderServiceImpl implements OrderService {
     Order foundOrder = findById(order.getId());
     if (foundOrder != null) {
       foundOrder.addProduct(product);
+      foundOrder = orderRepository.saveAndFlush(foundOrder);
       return foundOrder;
     } else {
       throw new EntityNotFoundException();
@@ -159,6 +172,7 @@ public class OrderServiceImpl implements OrderService {
     Order foundOrder = findById(order.getId());
     if (foundOrder != null) {
       foundOrder.removeProduct(product);
+      foundOrder = orderRepository.saveAndFlush(foundOrder);
       return foundOrder;
     } else {
       throw new EntityNotFoundException();

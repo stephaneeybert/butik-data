@@ -68,7 +68,7 @@ public class OrderServiceTest extends BaseTest {
     order0.addProduct(manyProducts.get(0));
     order0.addProduct(manyProducts.get(1));
     order0.addProduct(manyProducts.get(2));
-    orderService.add(order0);
+    order0 = orderService.add(order0);
   }
 
   @After
@@ -110,8 +110,9 @@ public class OrderServiceTest extends BaseTest {
   public void testUpdate() {
     EmailAddress email = new EmailAddress("peter@gmail.com");
     Integer orderRefId = 3;
-    order0.setEmail(email);
     order0.setOrderRefId(orderRefId);
+    order0.setEmail(email);
+    order0.setOrderedOn(aboutNow);
     order0 = orderService.update(order0.getId(), order0);
     assertThatOrder(order0).hasEmail(email);
     assertThatOrder(order0).hasOrderRefId(orderRefId);
@@ -120,9 +121,10 @@ public class OrderServiceTest extends BaseTest {
   @Test
   public void testPartialUpdate() {
     EmailAddress email = new EmailAddress("peter@gmail.com");
-    order0.setEmail(email);
     Integer originalOrderRefId = order0.getOrderRefId();
     order0.setOrderRefId(0);
+    order0.setEmail(email);
+    order0.setOrderedOn(aboutNow);
     order0 = orderService.partialUpdate(order0.getId(), order0);
     assertThatOrder(order0).hasEmail(email);
     assertThatOrder(order0).hasOrderRefId(originalOrderRefId);
