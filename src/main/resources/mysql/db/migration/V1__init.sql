@@ -1,6 +1,6 @@
 set foreign_key_checks = 0;
 
-drop sequence if exists shop_product_id_seq;
+drop table if exists shop_product_id_seq;
 create sequence shop_product_id_seq start with 1 increment by 10;
 
 drop table if exists shop_product;
@@ -14,7 +14,7 @@ create table shop_product (
   primary key (id)
 );
 
-drop sequence if exists shop_order_id_seq;
+drop table if exists shop_order_id_seq;
 create sequence shop_order_id_seq start with 1 increment by 10;
 drop table if exists shop_order;
 create table shop_order (
@@ -29,7 +29,7 @@ create table shop_order (
   primary key (id)
 );
 
-drop sequence if exists shop_order_product_id_seq;
+drop table if exists shop_order_product_id_seq;
 create sequence shop_order_product_id_seq start with 1 increment by 10;
 drop table if exists shop_order_product;
 create table shop_order_product (
